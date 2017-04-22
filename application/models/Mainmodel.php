@@ -6,6 +6,18 @@
 			$this->load->database();
 		}
 
+		function check_user($email, $pass)
+		{
+			$query = $this->db->get_where('user', array('email' => $email, 'password' => $pass));
+			return $query->num_rows();
+		}
+
+		function get_user($email)
+		{
+			$query = $this->db->get_where('user', array('email' => $email));
+			return $query->row();
+		}
+
 		function show_news()
 		{
 			$query = $this->db->query('SELECT * FROM `news` INNER JOIN `category` ON news.id_category = category.id_category');

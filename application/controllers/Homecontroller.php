@@ -7,8 +7,60 @@ class Homecontroller extends CI_Controller {
 	{
 		// $data['news'] = $this->Mainmodel->show_news();
 		// $this->load->view('Homeview',$data);
-		$this->load->view('HeaderView');
-		$this->load->view('LeftSidebarView');
+		
+		$this->load->view('LoginView');
+	}
+
+	function register_page()
+	{
+		$this->load->view('RegisterView');
+	}
+
+	function login()
+	{
+		$email = $this->input->post('email');
+		$pass = $this->input->post('password');
+		$num = $this->Mainmodel->check_user($email,$pass);
+		if ($num == 1)
+		{
+			//echo "berhasil";
+			$user = $this->Mainmodel->get_user($email);
+			$sess = array('email' => $email,'name' => $user->name,'id_user'=> $user->id_user, 'login' => TRUE);
+			$this->session->set_userdata($sess);
+			echo "<script type='text/javascript'>
+                          alert('Login Success !');</script>";
+        	redirect(base_url('Homecontroller/home_page'),'refresh');
+		}
+		else
+		{
+			echo "gagal";
+			//redirect(base_url());
+
+		}
+	}
+
+	function logout()
+	{
+		$this->session->unset_userdata('email');
+		$this->session->unset_userdata('login');
+		$this->session->unset_userdata('id_user');
+		redirect(base_url());
+	}
+
+	function home_page()
+	{
+		if ($this->session->userdata('login') == TRUE)
+		{
+			$this->load->view('HeaderView');
+			$this->load->view('LeftSidebarView');
+		}
+		else
+		{
+			echo "<script type='text/javascript'>
+                          alert('Please, login first !');</script>";
+        	redirect(base_url(),'refresh');
+		}
+		
 	}
 
 	
