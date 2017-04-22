@@ -5,8 +5,10 @@ class Homecontroller extends CI_Controller {
 
 	public function index()
 	{
-		$data['news'] = $this->Mainmodel->show_news();
-		$this->load->view('Homeview',$data);
+		// $data['news'] = $this->Mainmodel->show_news();
+		// $this->load->view('Homeview',$data);
+		$this->load->view('HeaderView');
+		$this->load->view('LeftSidebarView');
 	}
 
 	
