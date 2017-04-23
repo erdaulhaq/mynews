@@ -8,7 +8,7 @@
 
 		function check_user($email, $pass)
 		{
-			$query = $this->db->get_where('user', array('email' => $email, 'password' => $pass));
+			$query = $this->db->get_where('user', array('email' => $email, 'password' => md5($pass)));
 			return $query->num_rows();
 		}
 
@@ -16,6 +16,12 @@
 		{
 			$query = $this->db->get_where('user', array('email' => $email));
 			return $query->row();
+		}
+
+		function register($data)
+		{
+			$query = $this->db->insert("user", $data);
+			return $query;
 		}
 
 		function show_news()

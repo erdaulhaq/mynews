@@ -47,6 +47,39 @@ class Homecontroller extends CI_Controller {
 		redirect(base_url());
 	}
 
+	function register()
+	{
+		$a =  $this->input->post('password');
+		$this->form_validation->set_rules('email','Email','is_unique[user.email]',array('is_unique'=>'*Email is already exists !'));
+		$this->form_validation->set_rules('pass','Password','required',array('required' => '*Password field is required !'));
+		$this->form_validation->set_rules('confirmpassword','Confirm Password','matches[pass]',array('matches'=>'*Confirm Password field does not match !'));
+
+
+		$data = array(
+			'name' => $this->input->post('name'),
+			'email' => $this->input->post('email'), 
+			'password' => md5($this->input->post('pass')));
+
+		if($this->form_validation->run() == FALSE)
+		{
+			echo "<script type='text/javascript'>
+                          alert('Register failed, please check again !');</script>";
+            /*echo form_error('email');
+            echo form_error('confirm');*/
+            $this->load->view('RegisterView',$data);
+	
+		}
+		else
+		{
+			$this->Mainmodel->register($data);
+			echo "<script type='text/javascript'>
+                          alert('Register Success, login now !');</script>";
+            redirect(base_url(),'refresh');
+
+        	
+		}
+	}
+
 	function home_page()
 	{
 		if ($this->session->userdata('login') == TRUE)

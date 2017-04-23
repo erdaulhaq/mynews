@@ -34,14 +34,16 @@
         </div>
         <div class="card">
             <div class="body">
-                <form id="sign_up" method="POST">
+                <form action="<?=base_url('Homecontroller/register')?>" method="POST">
                     <div class="msg">Register a new membership</div>
+                    
                     <div class="input-group">
                         <span class="input-group-addon">
                             <i class="material-icons">person</i>
                         </span>
                         <div class="form-line">
-                            <input type="text" class="form-control" name="namesurname" placeholder="Name Surname" required autofocus>
+                            <input type="text" class="form-control" name="name" value="<?php echo set_value('name') ; ?>" placeholder="Name Surname" required autofocus>
+
                         </div>
                     </div>
                     <div class="input-group">
@@ -49,7 +51,17 @@
                             <i class="material-icons">email</i>
                         </span>
                         <div class="form-line">
-                            <input type="email" class="form-control" name="email" placeholder="Email Address" required>
+                            <input type="email" class="form-control" name="email" value="<?php echo set_value('email'); ?>" placeholder="Email Address" required>
+                             
+                        </div>
+                        <span class="text-danger"><?php echo form_error('email');?></span>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="password" class="form-control" name="pass" minlength="6"  placeholder="Password" required>
                         </div>
                     </div>
                     <div class="input-group">
@@ -57,16 +69,10 @@
                             <i class="material-icons">lock</i>
                         </span>
                         <div class="form-line">
-                            <input type="password" class="form-control" name="password" minlength="6" placeholder="Password" required>
+                            <input type="password" class="form-control" name="confirmpassword" minlength="6" placeholder="Confirm Password" required>
+                             
                         </div>
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            <i class="material-icons">lock</i>
-                        </span>
-                        <div class="form-line">
-                            <input type="password" class="form-control" name="confirm" minlength="6" placeholder="Confirm Password" required>
-                        </div>
+                        <span class="text-danger"><?php echo form_error('confirmpassword');?></span>
                     </div>
 
                     <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit">SIGN UP</button>
