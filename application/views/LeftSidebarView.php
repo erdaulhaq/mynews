@@ -25,8 +25,8 @@
             <div class="menu">
                 <ul class="list">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li class="active">
-                        <a href="index.html">
+                    <li>
+                        <a href="<?php echo base_url();?>Homecontroller/home_page">
                             <i class="material-icons">home</i>
                             <span>Home</span>
                         </a>
@@ -34,16 +34,30 @@
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">view_list</i>
-                            <span>Database</span>
+                            <span>View Data</span>
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="pages/tables/normal-tables.html">News</a>
+                                <a href="<?php echo base_url();?>Homecontroller/NewsView/">News</a>
                             </li>
                             <li>
-                                <a href="pages/tables/jquery-datatable.html">Category</a>
+                                <a href="<?php echo base_url();?>Homecontroller/CategoryView/">Category</a>
                             </li>
                            
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">assignment</i>
+                            <span>Add Data</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="<?php echo base_url();?>Homecontroller/add_news_page/">Add News</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo base_url();?>Homecontroller/add_category_page/">Add Category</a>
+                            </li>                    
                         </ul>
                     </li>
                     

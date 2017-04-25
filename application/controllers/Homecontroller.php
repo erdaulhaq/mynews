@@ -33,8 +33,10 @@ class Homecontroller extends CI_Controller {
 		}
 		else
 		{
-			echo "gagal";
-			//redirect(base_url());
+			//echo "gagal";
+			echo "<script type='text/javascript'>
+                          alert('Login Failed, please enter valid email and password !');</script>";
+        	redirect(base_url('Homecontroller'),'refresh');
 
 		}
 	}
@@ -86,6 +88,7 @@ class Homecontroller extends CI_Controller {
 		{
 			$this->load->view('HeaderView');
 			$this->load->view('LeftSidebarView');
+			$this->load->view('Homeview');
 		}
 		else
 		{
@@ -96,26 +99,97 @@ class Homecontroller extends CI_Controller {
 		
 	}
 
-	
+	function NewsView()
+	{
+		$data['news'] = $this->Mainmodel->show_news();
+		$this->load->view('HeaderView');
+		$this->load->view('LeftSidebarView');
+		$this->load->view('NewsView',$data);
+	}
+
+	function CategoryView()
+	{
+		$data['category'] = $this->Mainmodel->get_category();
+		$this->load->view('HeaderView');
+		$this->load->view('LeftSidebarView');
+		$this->load->view('CategoryView',$data);	
+	}
+
+	function do_upload()
+	{
+
+		$config['upload_path']          = './uploads/';
+        $config['allowed_types']        = 'jpg|png';
+        $this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload('image'))
+        {
+            $error = array('error' => $this->upload->display_errors());
+
+            echo $this->upload->display_errors();
+            echo "gagal";
+        }
+        else
+        {
+               $data = array('upload_data' => $this->upload->data());
+
+                        echo $this->upload->data('file_path');
+                }
+
+	}
 
 	function add_news_page()
 	{
 		$data['cat'] = $this->Mainmodel->get_category();
-
+		$this->load->view('HeaderView');
+		$this->load->view('LeftSidebarView');
 		$this->load->view('Addview',$data);
 	}
 
 	function add_news()
 	{
-		$data = array(
+		
+		
+
+
+		$config['upload_path']          = './uploads/';
+        $config['allowed_types']        = 'jpg|png';
+        $this->load->library('upload', $config);
+
+        if ( ! $this->upload->do_upload('image'))
+        {
+        	$data = array(
 			'title' => $this->input->post('title'),
 			'content' => $this->input->post('content'),
-			'id_category' => $this->input->post('category'), );
+			'id_category' => $this->input->post('category'));
 
-		$this->Mainmodel->add_news($data);
-		echo "<script type='text/javascript'>
-                          alert('ADD Success !');</script>";
-        redirect(base_url('Homecontroller'),'refresh');
+        	$data['cat'] = $this->Mainmodel->get_category();
+        	$data['error'] = $this->upload->display_errors();    
+        	echo "<script type='text/javascript'>
+                          alert('Add News Failed !');</script>";
+			$this->load->view('HeaderView');
+			$this->load->view('LeftSidebarView');
+			$this->load->view('Addview',$data);   
+            /*echo $this->upload->display_errors();
+            echo "gagal";*/
+        }
+        else
+        {
+        	$data = array('upload_data' => $this->upload->data());
+            $file_name =  $this->upload->data('file_name');
+        	$data = array(
+			'title' => $this->input->post('title'),
+			'content' => $this->input->post('content'),
+			'id_category' => $this->input->post('category'),
+			'image' => $file_name,
+			'id_user' => $this->session->userdata('id_user') );
+
+        	
+        	$this->Mainmodel->add_news($data);
+			echo "<script type='text/javascript'>
+                          alert('Add News Success !');</script>";
+        	redirect(base_url('Homecontroller/add_news_page'),'refresh');
+	    }
 	}
 
 	function delete_news($id_news)
@@ -123,7 +197,7 @@ class Homecontroller extends CI_Controller {
 		$this->Mainmodel->delete_news($id_news);
 		echo "<script type='text/javascript'>
                           alert('DELETE Success !');</script>";
-        redirect(base_url('Homecontroller'),'refresh');
+        redirect(base_url('Homecontroller/NewsView'),'refresh');
 	}
 
 	function edit_news_page($id_news)
@@ -150,16 +224,18 @@ class Homecontroller extends CI_Controller {
 	function add_category_page()
 	{
 		$data['category'] = $this->Mainmodel->get_category();
+		$this->load->view('HeaderView');
+		$this->load->view('LeftSidebarView');
 		$this->load->view('Addcategoryview',$data);
 	}
 
 	function add_category()
 	{
-		$data = array('name_category' => $this->input->post('category'));
+		$data = array('name_category' => $this->input->post('name_category'));
 		$this->Mainmodel->add_category($data);
 		echo "<script type='text/javascript'>
                           alert('ADD Category Success !');</script>";
-        redirect(base_url('Homecontroller'),'refresh');
+        redirect(base_url('Homecontroller/add_category_page'),'refresh');
 
 	}
 
@@ -168,6 +244,6 @@ class Homecontroller extends CI_Controller {
 		$this->Mainmodel->delete_cat($id_category);
 		echo "<script type='text/javascript'>
                           alert('DELETE Success !');</script>";
-        redirect(base_url('Homecontroller'),'refresh');
+        redirect(base_url('Homecontroller/CategoryView'),'refresh');
 	}
 }

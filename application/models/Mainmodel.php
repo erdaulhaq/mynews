@@ -26,7 +26,7 @@
 
 		function show_news()
 		{
-			$query = $this->db->query('SELECT * FROM `news` INNER JOIN `category` ON news.id_category = category.id_category');
+			$query = $this->db->query('SELECT * FROM `news` INNER JOIN `category` ON news.id_category = category.id_category INNER JOIN `user` ON user.id_user = news.id_user');
 			return $query->result_array();
 		}
 
